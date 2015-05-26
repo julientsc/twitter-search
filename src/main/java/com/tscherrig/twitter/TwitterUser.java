@@ -12,7 +12,10 @@ import java.util.Date;
  */
 public class TwitterUser {
     private Long id;
-
+    private Long lastFollowersUpdate = null;
+    private ArrayList<Long> followers = new ArrayList<Long>();
+    private Long lastFriendsUpdate = null;
+    private ArrayList<Long> friends = new ArrayList<Long>();
     public TwitterUser(Long id) {
         this.id = id;
     }
@@ -21,8 +24,6 @@ public class TwitterUser {
         return id;
     }
 
-    private Long lastFollowersUpdate = null;
-    private ArrayList<Long> followers = new ArrayList<Long>();
     public void fillFollowers(Twitter twitter, Data data) throws TwitterException {
         System.out.println("Search followers for account : " + id);
         long lCursor = -1;
@@ -40,7 +41,7 @@ public class TwitterUser {
                 if(!data.getTwitterUser().containsKey(i))
                     data.getTwitterUser().put(i, new TwitterUser(i));
 
-                System.out.println(" + Add follower : " + i);
+//                System.out.println(" + Add follower : " + i);
             }
             if(j++==6)
                 break;
@@ -49,8 +50,6 @@ public class TwitterUser {
         lastFollowersUpdate = new Date().getTime();
     }
 
-    private Long lastFriendsUpdate = null;
-    private ArrayList<Long> friends = new ArrayList<Long>();
     public void fillFriends(Twitter twitter, Data data) throws TwitterException {
         System.out.println("Search friends for account : " + id);
         long lCursor = -1;
@@ -68,7 +67,7 @@ public class TwitterUser {
                 if(!data.getTwitterUser().containsKey(i))
                     data.getTwitterUser().put(i, new TwitterUser(i));
 
-                System.out.println(" + Add friend : " + i);
+//                System.out.println(" + Add friend : " + i);
             }
             if(j++==6)
                 break;
