@@ -11,9 +11,7 @@ public class Main {
 
     public static void main(String[] args) {
         ConfigurationBuilder cb = new ConfigurationBuilder();
-        cb.setDebugEnabled(true)
-                .setOAuthConsumerKey("PBwpBVcMe2a5EU2SxZZbUTYC5")
-                .setOAuthConsumerSecret("mhdJ0EhJzWfSxqwSQPRFnijiocvQUgJ2Bo9vB2m6V5toragjBE");
+        Config.setConfig(cb);
         TwitterFactory tf = new TwitterFactory(cb.build());
         Twitter twitter = tf.getInstance();
 

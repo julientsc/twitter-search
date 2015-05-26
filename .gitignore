@@ -14,3 +14,6 @@
 hs_err_pid*
 
 
+
+data.json
+src/main/java/com/tscherrig/twitter/Config.java
