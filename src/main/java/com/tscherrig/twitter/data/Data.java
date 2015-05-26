@@ -1,6 +1,7 @@
-package com.tscherrig.twitter;
+package com.tscherrig.twitter.data;
 
-import java.util.ArrayList;
+import com.tscherrig.twitter.model.TwitterUser;
+
 import java.util.HashMap;
 
 /**

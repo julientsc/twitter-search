@@ -1,22 +1,23 @@
-package com.tscherrig.twitter;
+package com.tscherrig.twitter.model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.tscherrig.twitter.data.Data;
 
 import java.io.*;
 
 /**
  * Created by Julien on 26.05.15.
  */
-public class Procesing {
+public class FileAccess {
 
     private static final String path ="data.json";
-    private static Procesing INSTANCE = null;
+    private static FileAccess INSTANCE = null;
     private static Data data;
 
-    private Procesing() {
+    private FileAccess() {
         try {
-            this.data = Procesing.load(path);
+            this.data = FileAccess.load(path);
         } catch (IOException e) {
             e.printStackTrace();
             this.data = new Data();
@@ -24,15 +25,15 @@ public class Procesing {
         }
     }
 
-    public static Procesing getInstance() {
+    public static FileAccess getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new Procesing();
+            INSTANCE = new FileAccess();
         }
         return INSTANCE;
     }
 
     synchronized public static void clear() {
-        INSTANCE = new Procesing();
+        INSTANCE = new FileAccess();
         INSTANCE.save(path);
     }
 

@@ -1,5 +1,6 @@
-package com.tscherrig.twitter;
+package com.tscherrig.twitter.model;
 
+import com.tscherrig.twitter.data.Data;
 import twitter4j.IDs;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;

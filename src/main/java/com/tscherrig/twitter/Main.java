@@ -1,5 +1,9 @@
 package com.tscherrig.twitter;
 
+import com.tscherrig.twitter.config.Config;
+import com.tscherrig.twitter.data.Data;
+import com.tscherrig.twitter.model.FileAccess;
+import com.tscherrig.twitter.model.TwitterUser;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -15,7 +19,7 @@ public class Main {
         TwitterFactory tf = new TwitterFactory(cb.build());
         Twitter twitter = tf.getInstance();
 
-        Data data = Procesing.getInstance().getData();
+        Data data = FileAccess.getInstance().getData();
 
         int interval = 1000 * 60 * 60 * 24;
 
@@ -34,7 +38,7 @@ public class Main {
                     TwitterUser twitterUser = new TwitterUser(myId);
                     data.getTwitterUser().put(myId, twitterUser);
                 }
-                Procesing.save();
+                FileAccess.save();
                 System.out.println("ok");
             } else {
                 System.out.println("nothing to update");
@@ -51,7 +55,7 @@ public class Main {
             System.out.println(" Update followers ?");
             if (twitterUser.getLastFollowersUpdate() == null || twitterUser.getLastFollowersUpdate() + interval < new Date().getTime()) {
                 twitterUser.fillFollowers(twitter, data);
-                Procesing.save();
+                FileAccess.save();
             } else
                 System.out.println(" -> nothing to update");
 
@@ -59,7 +63,7 @@ public class Main {
             System.out.println(" Update friends ?");
             if (twitterUser.getLastFriendsUpdate() == null || twitterUser.getLastFriendsUpdate() + interval < new Date().getTime()) {
                 twitterUser.fillFriends(twitter, data);
-                Procesing.save();
+                FileAccess.save();
             } else
                 System.out.println(" -> nothing to update");
 
@@ -91,7 +95,7 @@ public class Main {
                     System.out.println(" -> nothing to update");
 
                 if (hasChange)
-                    Procesing.save();
+                    FileAccess.save();
             }
         } catch (TwitterException e) {
             System.err.println(e.getMessage());
@@ -116,7 +120,7 @@ public class Main {
                         hasChange = true;
                     }
                     if(hasChange)
-                        Procesing.save();
+                        FileAccess.save();
                 }
             } catch (TwitterException e) {
                 System.err.println(e.getMessage());
