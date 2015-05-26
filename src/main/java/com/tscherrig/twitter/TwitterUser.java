@@ -25,7 +25,7 @@ public class TwitterUser {
     }
 
     public void fillFollowers(Twitter twitter, Data data) throws TwitterException {
-        System.out.println("Search followers for account : " + id);
+        System.out.println("  Search followers for account : " + id);
         long lCursor = -1;
         IDs friendsIDs = twitter.getFriendsIDs(id, lCursor);
         ArrayList<Long> followers  = new ArrayList<Long>();
@@ -51,7 +51,7 @@ public class TwitterUser {
     }
 
     public void fillFriends(Twitter twitter, Data data) throws TwitterException {
-        System.out.println("Search friends for account : " + id);
+        System.out.println("  Search friends for account : " + id);
         long lCursor = -1;
         IDs friendsIDs = twitter.getFriendsIDs(id, lCursor);
         ArrayList<Long> friends  = new ArrayList<Long>();

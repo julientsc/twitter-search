@@ -19,10 +19,14 @@ public class Main {
 
         int interval = 1000 * 60 * 60 * 24;
 
-        // Serach current user
+        // Search current user
+        System.out.println(">>>> Starting");
         try {
+            Long myId = twitter.getId();
+            System.out.println("User to analyse : " + myId);
+
+            System.out.print(" Update user info : ");
             if(data.getUser() == null) {
-                Long myId = twitter.getId();
                 System.out.println(myId);
                 data.setUser(myId);
 
@@ -30,57 +34,92 @@ public class Main {
                     TwitterUser twitterUser = new TwitterUser(myId);
                     data.getTwitterUser().put(myId, twitterUser);
                 }
+                Procesing.save();
+                System.out.println("ok");
+            } else {
+                System.out.println("nothing to update");
             }
-            Procesing.save();
         } catch (TwitterException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
 
         // Fill user N
+        System.out.println("\n\n>>>> Fill basic user info");
         try {
             TwitterUser twitterUser = data.getTwitterUser().get(data.getUser());
 
-
-            if(twitterUser.getLastFollowersUpdate() == null || twitterUser.getLastFollowersUpdate() + interval < new Date().getTime())
+            System.out.println(" Update followers ?");
+            if (twitterUser.getLastFollowersUpdate() == null || twitterUser.getLastFollowersUpdate() + interval < new Date().getTime()) {
                 twitterUser.fillFollowers(twitter, data);
+                Procesing.save();
+            } else
+                System.out.println(" -> nothing to update");
 
-            if(twitterUser.getLastFriendsUpdate() == null || twitterUser.getLastFriendsUpdate() + interval < new Date().getTime())
+
+            System.out.println(" Update friends ?");
+            if (twitterUser.getLastFriendsUpdate() == null || twitterUser.getLastFriendsUpdate() + interval < new Date().getTime()) {
                 twitterUser.fillFriends(twitter, data);
+                Procesing.save();
+            } else
+                System.out.println(" -> nothing to update");
 
-            Procesing.save();
         } catch (TwitterException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
 
+
         // Fill user N + 1 -> from friends
+        System.out.println("\n\n>>>> Fill user info");
         try {
             for(Long key : data.getTwitterUser().get(data.getUser()).getFriends()) {
                 TwitterUser twitterUser = data.getTwitterUser().get(key);
-                if(twitterUser.getLastFollowersUpdate() == null || twitterUser.getLastFollowersUpdate() + interval < new Date().getTime())
-                    twitterUser.fillFollowers(twitter, data);
+                boolean hasChange = false;
 
-                if(twitterUser.getLastFriendsUpdate() == null || twitterUser.getLastFriendsUpdate() + interval < new Date().getTime())
+                System.out.println("Processing for user : " + key);
+                System.out.println(" Update followers ?");
+                if (twitterUser.getLastFollowersUpdate() == null || twitterUser.getLastFollowersUpdate() + interval < new Date().getTime()) {
+                    twitterUser.fillFollowers(twitter, data);
+                    hasChange = true;
+                } else
+                    System.out.println(" -> nothing to update");
+
+                System.out.println(" Update friends ?");
+                if (twitterUser.getLastFriendsUpdate() == null || twitterUser.getLastFriendsUpdate() + interval < new Date().getTime()) {
                     twitterUser.fillFriends(twitter, data);
-                Procesing.save();
+                    hasChange = true;
+                } else
+                    System.out.println(" -> nothing to update");
+
+                if (hasChange)
+                    Procesing.save();
             }
         } catch (TwitterException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
+/*
+
         while(true) {
+            System.out.println("\n\n>>>> Search N+1 users info");
 
             // Fill user N + 1 -> from followers
             try {
                 for (Long key : data.getTwitterUser().get(data.getUser()).getFollowers()) {
                     TwitterUser twitterUser = data.getTwitterUser().get(key);
-                    if (twitterUser.getLastFollowersUpdate() == null || twitterUser.getLastFollowersUpdate() + interval < new Date().getTime())
+                    boolean hasChange = false;
+                    if (twitterUser.getLastFollowersUpdate() == null || twitterUser.getLastFollowersUpdate() + interval < new Date().getTime()) {
                         twitterUser.fillFollowers(twitter, data);
+                        hasChange = true;
+                    }
 
-                    if (twitterUser.getLastFriendsUpdate() == null || twitterUser.getLastFriendsUpdate() + interval < new Date().getTime())
+                    if (twitterUser.getLastFriendsUpdate() == null || twitterUser.getLastFriendsUpdate() + interval < new Date().getTime()) {
                         twitterUser.fillFriends(twitter, data);
-                    Procesing.save();
+                        hasChange = true;
+                    }
+                    if(hasChange)
+                        Procesing.save();
                 }
             } catch (TwitterException e) {
-                e.printStackTrace();
+                System.err.println(e.getMessage());
             }
 
             try {
@@ -90,5 +129,6 @@ public class Main {
             }
 
         }
+        */
     }
 }

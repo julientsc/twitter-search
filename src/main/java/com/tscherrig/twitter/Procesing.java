@@ -12,13 +12,7 @@ public class Procesing {
 
     private static final String path ="data.json";
     private static Procesing INSTANCE = null;
-
-    public static Procesing getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new Procesing();
-        }
-        return INSTANCE;
-    }
+    private static Data data;
 
     private Procesing() {
         try {
@@ -30,10 +24,11 @@ public class Procesing {
         }
     }
 
-    private static Data data;
-
-    synchronized public Data getData() {
-        return data;
+    public static Procesing getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new Procesing();
+        }
+        return INSTANCE;
     }
 
     synchronized public static void clear() {
@@ -42,6 +37,7 @@ public class Procesing {
     }
 
     public static void save() {
+        System.out.println("(Save as " + path + ")");
         save(path);
     }
 
@@ -66,5 +62,9 @@ public class Procesing {
         Data obj = gson.fromJson(br, Data.class);
         br.close();
         return obj;
+    }
+
+    synchronized public Data getData() {
+        return data;
     }
 }
