@@ -21,7 +21,7 @@ public class Main {
 
         Data data = FileAccess.getInstance().getData();
 
-        int interval = 1000 * 60 * 60 * 24;
+        int interval = 1000 * 60 * 60 * 24 * 7;
 
         // Search current user
         System.out.println(">>>> Starting");
@@ -71,11 +71,11 @@ public class Main {
             System.err.println(e.getMessage());
         }
 
-
+        while (true) {
         // Fill user N + 1 -> from friends
         System.out.println("\n\n>>>> Fill user info");
         try {
-            for(Long key : data.getTwitterUser().get(data.getUser()).getFriends()) {
+            for (Long key : data.getTwitterUser().get(data.getUser()).getFriends()) {
                 TwitterUser twitterUser = data.getTwitterUser().get(key);
                 boolean hasChange = false;
 
@@ -99,6 +99,16 @@ public class Main {
             }
         } catch (TwitterException e) {
             System.err.println(e.getMessage());
+        }
+
+            for (int i = 0; i < 15; i++) {
+                System.out.println("... next exection in " + (15 - i) + " minute(s)");
+                try {
+                    Thread.sleep(1000 * 60);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 /*
 
